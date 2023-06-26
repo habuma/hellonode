@@ -67,3 +67,34 @@ Then, in a separate terminal window you can send a request to the app using
 $ curl localhost:8080/hello
 Hello world
 ```
+
+## Configuring with a ConfigMap or Secret
+
+To configure the greeting message with a `ConfigMap` or `Secret`, first create
+the `ConfigMap` or `Secret` containing the `.env` file. For example:
+
+```
+$ kubectl create secret generic greetingconfig --from-file .env
+```
+
+Then uncomment the lines in `k8s/deploy.yaml` that mount that secret:
+
+```
+    spec:
+      containers:
+      - name: hello-node-container
+        image: hellonode:0.0.1-SNAPSHOT
+        volumeMounts:
+        - name: greeting-config
+          mountPath: /etc/config
+      volumes:
+      - name: greeting-config
+        secret:
+          secretName: greetingconfig
+```
+
+If Skaffold is still running in "dev" mode, this change should trigger a
+rebuild/redeploy. If not, then run Skaffold in "dev" mode again to deploy
+the application with these new changes. You'll also need to reestablish
+the port forward because it won't survive a pod restart.
+

@@ -1,5 +1,5 @@
 var express = require('express');
-require('dotenv').config({path: '/Users/cwalls/configtree/.env'});
+require('dotenv').config({path: '/etc/config/.env'});
 
 const serverPort = process.env.SERVER_PORT ?? 8080;
 

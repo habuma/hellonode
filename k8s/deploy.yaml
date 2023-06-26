@@ -16,14 +16,14 @@ spec:
     spec:
       containers:
       - name: hello-node-container
-        image: hellonode:0.0.1-SNAPSHOT
+        image: hellonode:v1
       #   volumeMounts:
-      #   - name: cook-config
+      #   - name: greeting-config
       #     mountPath: /etc/config
       # volumes:
-      # - name: cook-config
-      #   configMap:
-      #     name: habuma-config-slice-cqf8c
+      # - name: greeting-config
+      #   secret:
+      #     secretName: greetingconfig
 ---
 apiVersion: v1
 kind: Service
