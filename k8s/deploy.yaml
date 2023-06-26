@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello-node-deploy
+  labels:
+    app: hello-node
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hello-node
+  template:
+    metadata:
+      labels:
+        app: hello-node
+    spec:
+      containers:
+      - name: hello-node-container
+        image: hellonode:0.0.1-SNAPSHOT
+      #   volumeMounts:
+      #   - name: cook-config
+      #     mountPath: /etc/config
+      # volumes:
+      # - name: cook-config
+      #   configMap:
+      #     name: habuma-config-slice-cqf8c
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: hello-node-svc
+  labels:
+    app: hello-node
+spec:
+  type: NodePort
+  ports:
+  - port: 31234
+    nodePort: 30123
+    targetPort: 8080
+    protocol: TCP
+    name: http
+  selector:
+    app: hello-node
